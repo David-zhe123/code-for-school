@@ -1,0 +1,28 @@
+# === Java / Maven ===
+target/
+*.class
+*.jar
+*.war
+!MavenWrapper/
+
+# === Node / Vue ===
+node_modules/
+dist/
+.vite/
+
+# === 开发工具 ===
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# === 系统文件 ===
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# === 环境配置（如果有敏感信息） ===
+# application-prod.yml
+# .env.local
