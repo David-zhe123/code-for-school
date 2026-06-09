@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.travel.mapper.AdminMapper">
+
+    <resultMap id="AdminMap" type="com.travel.pojo.entity.Admin">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="passwordHash" column="password_hash"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="findByUsername" resultMap="AdminMap">
+        select * from t_admin where username = #{username}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into t_admin (username, password_hash, created_at, updated_at)
+        values (#{username}, #{passwordHash}, #{createdAt}, #{updatedAt})
+    </insert>
+
+</mapper>
+

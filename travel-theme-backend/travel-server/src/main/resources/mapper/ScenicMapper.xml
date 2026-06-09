@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.travel.mapper.ScenicMapper">
+
+    <resultMap id="ScenicMap" type="com.travel.pojo.entity.ScenicSpot">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="category" column="category"/>
+        <result property="price" column="price"/>
+        <result property="address" column="address"/>
+        <result property="image" column="image"/>
+        <result property="description" column="description"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="findById" resultMap="ScenicMap">
+        select * from t_scenic_spot where id = #{id}
+    </select>
+
+    <select id="search" resultMap="ScenicMap">
+        select * from t_scenic_spot
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (name like concat('%', #{keyword}, '%')
+                or address like concat('%', #{keyword}, '%')
+                or description like concat('%', #{keyword}, '%'))
+            </if>
+            <if test="category != null and category != ''">
+                and category = #{category}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into t_scenic_spot (name, category, price, address, image, description, created_at, updated_at)
+        values (#{name}, #{category}, #{price}, #{address}, #{image}, #{description}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <update id="update">
+        update t_scenic_spot
+        set name = #{name},
+            category = #{category},
+            price = #{price},
+            address = #{address},
+            image = #{image},
+            description = #{description},
+            updated_at = #{updatedAt}
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from t_scenic_spot where id = #{id}
+    </delete>
+
+</mapper>
+

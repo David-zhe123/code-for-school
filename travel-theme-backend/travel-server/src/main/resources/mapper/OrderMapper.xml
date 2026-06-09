@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.travel.mapper.OrderMapper">
+
+    <resultMap id="OrderMap" type="com.travel.pojo.entity.Order">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <resultMap id="OrderItemMap" type="com.travel.pojo.entity.OrderItem">
+        <id property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="scenicId" column="scenic_id"/>
+        <result property="scenicName" column="scenic_name"/>
+        <result property="scenicPrice" column="scenic_price"/>
+        <result property="note" column="note"/>
+        <result property="sortOrder" column="sort_order"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_order (user_id, total_price, status, created_at, updated_at)
+        values (#{userId}, #{totalPrice}, #{status}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <insert id="insertOrderItems">
+        insert into t_order_item (order_id, scenic_id, scenic_name, scenic_price, note, sort_order, created_at, updated_at)
+        values
+        <foreach collection="items" item="i" separator=",">
+            (#{i.orderId}, #{i.scenicId}, #{i.scenicName}, #{i.scenicPrice}, #{i.note}, #{i.sortOrder}, #{i.createdAt}, #{i.updatedAt})
+        </foreach>
+    </insert>
+
+    <select id="listByUserId" resultMap="OrderMap">
+        select * from t_order where user_id = #{userId} order by id desc
+    </select>
+
+    <select id="listAll" resultMap="OrderMap">
+        select * from t_order order by id desc
+    </select>
+
+    <select id="listItems" resultMap="OrderItemMap">
+        select * from t_order_item where order_id = #{orderId} order by sort_order asc, id asc
+    </select>
+
+    <update id="updateStatus">
+        update t_order set status = #{status}, updated_at = now() where id = #{id}
+    </update>
+
+</mapper>
+
